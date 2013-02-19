@@ -155,7 +155,7 @@ module WAZ
       
       # Adds a block to the block list of the given blob
       def put_block(path, identifier, payload)
-        execute :put, path, { :comp => 'block', :blockid => identifier }, {'Content-Type' => "application/octet-stream"}, payload
+        execute :put, path, { :comp => 'block', :blockid => identifier, :timeout => 3600 }, {'Content-Type' => "application/octet-stream"}, payload
       end
       
       # Retrieves the list of blocks associated with a single blob. The list is filtered (or not) by type of blob
