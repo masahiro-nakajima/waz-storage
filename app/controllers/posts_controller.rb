@@ -23,6 +23,12 @@ class PostsController < ApplicationController
   # POST /posts
   #
   def create
+    @post = Post.new(params[:post])
+    if @post.save
+      redirect_to posts_path, :notice => "Create Post!"
+    else
+      render 'new'
+    end
   end
 
   #
