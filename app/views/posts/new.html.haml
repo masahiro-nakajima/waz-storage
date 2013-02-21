@@ -1,0 +1,11 @@
+%h1 Posts new
+
+= form_for @post do |f|
+  %fieldset
+    %div
+      = f.label :titile
+      = f.text_field :title
+    %div
+      = f.label :body
+      = f.text_area :body
+  = f.submit "Create"
