@@ -7,5 +7,6 @@
   .post{style: 'border: solid 1px'}
     .title
       = post.title
+      = link_to 'Detail', post_path(post)
     .body
       = post.body
