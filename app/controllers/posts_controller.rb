@@ -37,6 +37,7 @@ class PostsController < ApplicationController
   # GET /posts/:id/edit
   #
   def edit
+    @post = Post.find(params[:id])
   end
 
 
