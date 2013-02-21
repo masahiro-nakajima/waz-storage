@@ -45,6 +45,14 @@ class PostsController < ApplicationController
   # PUT /posts/:id
   #
   def update
+    @post = Post.find(params[:id])
+    @post.assign_attributes(params[:post])
+
+    if @post.save
+      redirect_to posts_path, :notice => "Update Post!"
+    else
+      render 'edit'
+    end
   end
 
   #
