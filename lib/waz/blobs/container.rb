@@ -141,18 +141,8 @@ module WAZ
         path = "#{self.name}/#{blob_name}"
         n = 0
         until stream.eof?
-          content = stream.read(block_size)
-          errors = 0
-          begin
-            self.class.service_instance.put_block path, Base64.encode64('%064d' % n), content
-            n += 1
-          rescue Errno::ETIMEDOUT, Errno::ECONNREFUSED, Errno::ECONNRESET => e
-            if errors > 5
-              raise e.class, "An error happened at 'put_block' API", e.backtrace
-            end
-            errors += 1
-            retry
-          end
+          self.class.service_instance.put_block path, Base64.encode64('%064d' % n), stream.read(block_size)
+          n += 1
         end
         self.class.service_instance.put_block_list path, (0...n).map{|id| Base64.encode64('%064d' % id)}, content_type, options
         return BlobObject.new(:name => blob_name, :url => self.class.service_instance.generate_request_uri("#{self.name}/#{blob_name}"), :content_type => content_type)

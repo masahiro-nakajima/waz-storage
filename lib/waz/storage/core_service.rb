@@ -116,7 +116,18 @@ module WAZ
         escaped_path = path.split("/").map{ | part | CGI.escape(part) }.join("/")
         url = generate_request_uri(escaped_path, query)
         request = generate_request(verb, url, headers, payload)
-        request.execute()
+
+        errors = 0
+        begin
+          request.execute()
+        rescue Errno::ETIMEDOUT, Errno::ECONNREFUSED, Errno::ECONNRESET => e
+          if errors > 5
+            raise e.class, e.message, e.backtrace
+          end
+          errors += 1
+          retry
+        end
+
       end
     end
   end
